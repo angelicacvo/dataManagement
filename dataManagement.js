@@ -51,31 +51,28 @@ for (const product in menu) {
 
 //search one product in the object menu with for...in
 function searchProduct() {
-  let flag = true;
-  while (flag) {
-    let decision = prompt("Which product do you want to search?").toLowerCase();
-    let found = false;
-    for (product in menu) {
-      if (decision === menu[product].name) {
-        console.log(
-          `product ID: ${product}, details: ${menu[product].name}, ${menu[product].price}`
-        );
-        alert(
-          `product ID: ${product}, details: ${menu[product].name}, ${menu[product].price}`
-        );
-        found = true;
-        break;
-      }
-    }
-    if (found === false) {
-      console.warn("the product doesn't exist in our database");
-      alert("the product doesn't exist in our database");
-    }
-    let repeat = prompt("Do you want to search another product? type [y] yes or [n] no").toLowerCase();
-    if (repeat === "no" || repeat === "n"){
-      flag = false;
+  let encontrado = false
+  const decision = document.getElementById("search");
+  const bodyTable = document.getElementById("table-dates");
+  bodyTable.innerHTML = "";
+  const resultado = document.getElementById("resultadoProducto");
+  decision.innerHTML = "";
+  resultado.innerHTML = "";
+  for (product in menu) {
+    if (decision.value === menu[product].name) {
+      resultado.innerHTML = `
+          <strong>ID:</strong> ${product}<br>
+          <strong>Nombre:</strong> ${menu[product].name}<br>
+          <strong>Precio:</strong> ${menu[product].price}
+      `;
+      encontrado = true
+      break;
     }
   }
+  if (!encontrado) {
+    alert("Producto no encontrado")
+  }
+  decision.value = ""
 }
 
 //iterates the Set menuSet
@@ -89,4 +86,24 @@ menuMap.forEach((product, category) => {
 });
 
 //function call
-searchProduct();
+function tableProducts() {
+  console.log("entra")
+  const resultado = document.getElementById("resultadoProducto");
+  const bodyTable = document.getElementById("table-dates");
+  bodyTable.innerHTML = "";
+  resultado.innerHTML = "";
+  for (let dates in menu) {
+    const product = menu[dates];
+    const row = document.createElement("tr");
+    const celdaID = document.createElement("td");
+    celdaID.textContent = product.id;
+    const celdaNombre = document.createElement("td")
+    celdaNombre.textContent = product.name;
+    const celdaPrecio = document.createElement("td")
+    celdaPrecio.textContent = product.price;
+    row.appendChild(celdaID);
+    row.appendChild(celdaNombre);
+    row.appendChild(celdaPrecio);
+    bodyTable.appendChild(row)
+  }
+}
